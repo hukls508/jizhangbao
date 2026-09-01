@@ -510,6 +510,235 @@ body {
 .modal-btns .cancel { background: #f0f0f0; color: var(--text); }
 .modal-btns .confirm { background: var(--primary); color: #fff; }
 
+/* ===== 成就系统 ===== */
+.achievements-section { margin-bottom: 12px; }
+.achievements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.achievements-header .title { font-size: 16px; font-weight: 600; }
+.achievements-header .streak {
+  font-size: 13px;
+  color: var(--primary);
+  background: var(--primary-lighter);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.achievement-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 6px;
+  border-radius: 10px;
+  background: #fafafa;
+  position: relative;
+  transition: all 0.3s;
+}
+.achievement-item.unlocked {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  box-shadow: 0 2px 8px rgba(46,125,50,0.15);
+}
+.achievement-item .ach-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+  background: #e0e0e0;
+  filter: grayscale(100%);
+  opacity: 0.5;
+  transition: all 0.3s;
+  position: relative;
+  border: 2px solid #ccc;
+}
+.achievement-item.unlocked .ach-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+/* 等级1：铜质徽章 */
+.achievement-item.unlocked.level-1 .ach-icon {
+  background: linear-gradient(135deg, #d4a574, #b8860b);
+  border-color: #cd853f;
+  box-shadow: 0 2px 8px rgba(205,133,63,0.3);
+  animation: badge-glow 2.5s ease-in-out infinite;
+}
+/* 等级2：银质徽章 */
+.achievement-item.unlocked.level-2 .ach-icon {
+  background: linear-gradient(135deg, #e8e8e8, #c0c0c0);
+  border-color: #a8a8a8;
+  box-shadow: 0 2px 10px rgba(192,192,192,0.4);
+  animation: badge-glow 2.2s ease-in-out infinite;
+}
+/* 等级3：金质徽章 */
+.achievement-item.unlocked.level-3 .ach-icon {
+  background: linear-gradient(135deg, #ffd700, #daa520);
+  border-color: #ffb700;
+  box-shadow: 0 2px 12px rgba(255,215,0,0.4);
+  animation: badge-glow 2s ease-in-out infinite;
+}
+/* 等级4：翡翠徽章 */
+.achievement-item.unlocked.level-4 .ach-icon {
+  background: linear-gradient(135deg, #50c878, #2e8b57);
+  border-color: #3cb371;
+  box-shadow: 0 2px 14px rgba(80,200,120,0.5);
+  animation: badge-bounce 1.8s ease-in-out infinite;
+}
+/* 等级5：蓝宝石徽章 */
+.achievement-item.unlocked.level-5 .ach-icon {
+  background: linear-gradient(135deg, #4169e1, #1e90ff);
+  border-color: #00bfff;
+  box-shadow: 0 0 15px rgba(65,105,225,0.5), 0 0 30px rgba(30,144,255,0.2);
+  animation: badge-bounce 1.5s ease-in-out infinite;
+}
+/* 等级6：紫晶徽章 + 光环 */
+.achievement-item.unlocked.level-6 .ach-icon {
+  background: linear-gradient(135deg, #9370db, #8a2be2);
+  border-color: #ba55d3;
+  box-shadow: 0 0 18px rgba(147,112,219,0.6), 0 0 35px rgba(138,43,226,0.3);
+  animation: badge-rotate 2s linear infinite;
+}
+.achievement-item.unlocked.level-6 .ach-icon::after {
+  content: '✨';
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  font-size: 14px;
+  animation: star-twinkle 1s ease-in-out infinite;
+}
+/* 等级7：传奇徽章 + 彩虹光环 + 星星 */
+.achievement-item.unlocked.level-7 .ach-icon {
+  background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b);
+  background-size: 300% 300%;
+  border-color: #ffd700;
+  border-width: 3px;
+  box-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 40px rgba(255,140,0,0.4), 0 0 60px rgba(255,69,0,0.2);
+  animation: legendary-badge 1.5s ease-in-out infinite, rainbow-bg 3s linear infinite;
+}
+.achievement-item.unlocked.level-7 .ach-icon::before {
+  content: '⭐';
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  font-size: 12px;
+  animation: star-twinkle 0.8s ease-in-out infinite;
+}
+.achievement-item.unlocked.level-7 .ach-icon::after {
+  content: '✨';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 16px;
+  animation: star-twinkle 1.2s ease-in-out infinite 0.4s;
+}
+
+@keyframes badge-glow {
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  50% { transform: scale(1.05); }
+}
+@keyframes badge-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes badge-rotate {
+  0% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+  100% { transform: rotate(-3deg); }
+}
+@keyframes legendary-badge {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.08) rotate(-3deg); }
+  50% { transform: scale(1.12) rotate(0deg); }
+  75% { transform: scale(1.08) rotate(3deg); }
+}
+@keyframes rainbow-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+.achievement-item .ach-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  text-align: center;
+  margin-bottom: 2px;
+}
+.achievement-item.unlocked .ach-name { color: var(--primary-dark); }
+.achievement-item .ach-desc {
+  font-size: 10px;
+  color: #bbb;
+  text-align: center;
+}
+.achievement-item.unlocked .ach-desc { color: var(--text-light); }
+.achievement-item .ach-lock {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+}
+.achievement-item.unlocked .ach-lock { display: none; }
+.achievement-item .ach-check {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 12px;
+  display: none;
+}
+.achievement-item.unlocked .ach-check { display: block; }
+.achievement-progress {
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--primary-lighter);
+  border-radius: 8px;
+}
+.achievement-progress .progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+.achievement-progress .progress-bar {
+  height: 8px;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.achievement-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
+  border-radius: 4px;
+  transition: width 0.5s;
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* 访问统计 */
+.stats-footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+.stats-footer span { margin: 0 6px; }
+
 /* Toast */
 .toast {
   position: fixed;
@@ -653,6 +882,22 @@ body {
     </div>
   </div>
   
+  <!-- 成就系统 -->
+  <div class="card achievements-section">
+    <div class="achievements-header">
+      <span class="title">🏆 记账成就</span>
+      <span class="streak">连续 <span id="streakDays">0</span> 天</span>
+    </div>
+    <div class="achievements-grid" id="achievementsGrid"></div>
+    <div class="achievement-progress" id="achievementProgress">
+      <div class="progress-text">
+        <span id="nextAchievement">下一个成就</span>
+        <span id="achievementProgressText">0/7天</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="achievementProgressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+  
   <div class="menu-list">
     <div class="menu-item" onclick="exportData()">
       <span class="menu-icon">📤</span>
@@ -706,6 +951,12 @@ body {
     <span class="nav-icon">✏️</span>
     <span class="nav-text">记账</span>
   </div>
+</div>
+
+<!-- 访问统计 -->
+<div class="stats-footer">
+  <span>👀 总访问 <span id="busuanzi_value_site_pv">0</span> 次</span>
+  <span>👤 访客 <span id="busuanzi_value_site_uv">0</span> 人</span>
 </div>
 
 <!-- 预算设置弹窗 -->
@@ -780,6 +1031,7 @@ function init() {
   updateBillList();
   updateBudgetDisplay();
   updateTotalDays();
+  renderAchievements();
 }
 
 function todayStr() {
@@ -806,7 +1058,7 @@ function switchPage(page) {
   
   if (page === 'bills') updateBillList();
   if (page === 'stats') renderStats();
-  if (page === 'me') { updateBudgetDisplay(); updateTotalDays(); }
+  if (page === 'me') { updateBudgetDisplay(); updateTotalDays(); renderAchievements(); }
 }
 
 // ===== 记账功能 =====
@@ -859,6 +1111,7 @@ function saveBill() {
   
   saveData();
   showToast('记账成功！');
+  renderAchievements();
   
   // 重置表单
   document.getElementById('amountInput').value = '';
@@ -935,6 +1188,7 @@ function deleteBill(id) {
   data.bills = data.bills.filter(b => b.id !== id);
   saveData();
   updateBillList();
+  renderAchievements();
   showToast('已删除');
 }
 
@@ -1147,6 +1401,68 @@ function updateTotalDays() {
   document.getElementById('totalDays').textContent = dates.size;
 }
 
+// ===== 成就系统 =====
+const ACHIEVEMENTS = [
+  { days: 7, icon: '🪙', name: '初露锋芒', desc: '连续记账7天', level: 1 },
+  { days: 30, icon: '💰', name: '崭露头角', desc: '连续记账30天', level: 2 },
+  { days: 90, icon: '🐷', name: '小有所成', desc: '连续记账3个月', level: 3 },
+  { days: 150, icon: '🏦', name: '日积月累', desc: '连续记账5个月', level: 4 },
+  { days: 180, icon: '💎', name: '半程巅峰', desc: '连续记账6个月', level: 5 },
+  { days: 240, icon: '🏯', name: '记账宗师', desc: '连续记账8个月', level: 6 },
+  { days: 365, icon: '👑', name: '年度传奇', desc: '连续记账一整年', level: 7 }
+];
+
+function calcStreakDays() {
+  if (data.bills.length === 0) return 0;
+  const dates = new Set(data.bills.map(b => b.date));
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 400; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (dates.has(dateStr)) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function renderAchievements() {
+  const streak = calcStreakDays();
+  document.getElementById('streakDays').textContent = streak;
+  
+  const grid = document.getElementById('achievementsGrid');
+  grid.innerHTML = ACHIEVEMENTS.map(ach => {
+    const unlocked = streak >= ach.days;
+    return `<div class="achievement-item ${unlocked ? 'unlocked' : ''} level-${ach.level}">
+      <span class="ach-lock">🔒</span>
+      <span class="ach-check">✅</span>
+      <div class="ach-icon">${ach.icon}</div>
+      <div class="ach-name">${ach.name}</div>
+      <div class="ach-desc">${ach.desc}</div>
+    </div>`;
+  }).join('');
+  
+  // 下一个成就进度
+  const nextAch = ACHIEVEMENTS.find(a => streak < a.days);
+  const progressDiv = document.getElementById('achievementProgress');
+  if (nextAch) {
+    const prevDays = ACHIEVEMENTS.find(a => a.days < nextAch.days) ? ACHIEVEMENTS.filter(a => a.days < nextAch.days).pop().days : 0;
+    const progress = Math.min(((streak - prevDays) / (nextAch.days - prevDays)) * 100, 100);
+    document.getElementById('nextAchievement').textContent = `距「${nextAch.name}」还需${nextAch.days - streak}天`;
+    document.getElementById('achievementProgressText').textContent = `${streak}/${nextAch.days}天`;
+    document.getElementById('achievementProgressFill').style.width = progress + '%';
+    progressDiv.style.display = 'block';
+  } else {
+    document.getElementById('nextAchievement').textContent = '🎉 已解锁全部成就！';
+    document.getElementById('achievementProgressText').textContent = '传奇达成';
+    document.getElementById('achievementProgressFill').style.width = '100%';
+  }
+}
+
 function showAbout() {
   alert('记账宝 v1.0\n\n简单好用的个人记账工具\n数据保存在本地，安全可靠\n\n© 2026 记账宝');
 }
@@ -1161,5 +1477,7 @@ function showToast(msg) {
 // 启动
 init();
 </script>
+<!-- 不蒜子访问统计 -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
