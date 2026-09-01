@@ -458,30 +458,34 @@ body {
 .nav-item.active { color: var(--primary); }
 .nav-item .nav-icon { font-size: 22px; line-height: 1; }
 .nav-item .nav-text { font-size: 11px; margin-top: 3px; }
+.nav-item.nav-placeholder { visibility: hidden; cursor: default; }
 .nav-item.add-btn {
-  position: relative;
-  flex: 0 0 60px;
+  margin-top: 0;
+  flex: 1;
+  width: auto;
   height: 60px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .nav-item.add-btn .nav-icon {
-  position: absolute;
-  top: -26px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2e7d32, #4caf50);
-  color: #fff;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  color: var(--text-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
-  font-weight: 900;
+  font-size: 22px;
+  font-weight: normal;
   line-height: 1;
-  box-shadow: 0 6px 16px rgba(46,125,50,0.5), 0 2px 6px rgba(0,0,0,0.2);
-  border: 4px solid #fff;
+  box-shadow: none;
+  border: none;
 }
+.nav-item.add-btn.active .nav-icon { color: var(--primary); }
 .modal-mask {
   display: none;
   position: fixed;
@@ -987,7 +991,8 @@ body {
     <span class="nav-text">统计</span>
   </div>
   <div class="nav-item add-btn" onclick="switchPage('add', this)">
-    <span class="nav-icon">＋</span>
+    <span class="nav-icon">✏️</span>
+    <span class="nav-text">记账</span>
   </div>
   <div class="nav-item" onclick="switchPage('me', this)">
     <span class="nav-icon">👤</span>
