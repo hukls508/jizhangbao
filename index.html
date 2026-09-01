@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>记账宝 - 简单好用的记账工具</title>
+<meta name="theme-color" content="#2e7d32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="记账宝">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232e7d32' width='100' height='100' rx='20'/><text x='50' y='68' font-size='50' text-anchor='middle'>💰</text></svg>">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -87,6 +93,30 @@ body {
 .amount-input.expense { color: var(--expense); }
 .amount-input.income { color: var(--income); }
 .amount-unit { font-size: 18px; color: var(--text-light); }
+.quick-amounts {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.quick-amounts button {
+  flex: 1;
+  min-width: 50px;
+  padding: 8px 0;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quick-amounts button:active {
+  background: var(--primary-lighter);
+  border-color: var(--primary);
+  color: var(--primary);
+}
 .category-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -585,6 +615,50 @@ body {
 }
 .modal-btns .cancel { background: #f0f0f0; color: var(--text); }
 .modal-btns .confirm { background: var(--primary); color: #fff; }
+.cat-manage-list {
+  max-height: 250px;
+  overflow-y: auto;
+  margin: 12px 0;
+}
+.cat-manage-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.cat-manage-item .cat-icon { font-size: 20px; margin-right: 10px; }
+.cat-manage-item .cat-name { flex: 1; font-size: 14px; }
+.cat-manage-item .cat-del {
+  color: #e53935;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 6px;
+}
+.cat-add-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cat-add-row input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+.cat-add-row input:focus { border-color: var(--primary); }
+.cat-add-row button {
+  padding: 10px 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
 .achievements-section { margin-bottom: 12px; }
 .achievements-header {
   display: flex;
@@ -836,6 +910,14 @@ body {
         <input type="number" class="amount-input expense" id="amountInput" placeholder="0.00" step="0.01" inputmode="decimal">
       </div>
     </div>
+    <div class="quick-amounts">
+      <button onclick="addQuickAmount(10)">10</button>
+      <button onclick="addQuickAmount(20)">20</button>
+      <button onclick="addQuickAmount(50)">50</button>
+      <button onclick="addQuickAmount(100)">100</button>
+      <button onclick="addQuickAmount(200)">200</button>
+      <button onclick="clearAmount()">清空</button>
+    </div>
     <div class="category-grid" id="categoryGrid"></div>
     <div class="input-row">
       <label>备注</label>
@@ -947,6 +1029,16 @@ body {
     </div>
   </div>
   <div class="menu-list">
+    <div class="menu-item" onclick="showAddToHome()">
+      <span class="menu-icon">📱</span>
+      <span class="menu-text">添加到桌面</span>
+      <span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-item" onclick="showCategoryManage()">
+      <span class="menu-icon">⚙️</span>
+      <span class="menu-text">分类管理</span>
+      <span class="menu-arrow">›</span>
+    </div>
     <div class="menu-item" onclick="exportData()">
       <span class="menu-icon">📤</span>
       <span class="menu-text">导出JSON数据</span>
@@ -1018,6 +1110,25 @@ body {
   </div>
 </div>
 
+<div class="modal-mask" id="categoryModal">
+  <div class="modal">
+    <h3>分类管理</h3>
+    <div class="type-toggle">
+      <button class="active" data-cat-type="expense" onclick="setCatManageType('expense')">支出</button>
+      <button data-cat-type="income" onclick="setCatManageType('income')">收入</button>
+    </div>
+    <div class="cat-manage-list" id="catManageList"></div>
+    <div class="cat-add-row">
+      <input type="text" id="newCatIcon" placeholder="图标" maxlength="2" style="width:50px">
+      <input type="text" id="newCatName" placeholder="分类名称" maxlength="6">
+      <button onclick="addCategory()">添加</button>
+    </div>
+    <div class="modal-btns">
+      <button class="confirm" onclick="hideCategoryModal()">完成</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-mask" id="editModal">
   <div class="modal">
     <h3>编辑账单</h3>
@@ -1067,7 +1178,7 @@ function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-const categories = {
+const defaultCategories = {
   expense: [
     { name: '餐饮', icon: '🍜' },
     { name: '交通', icon: '🚗' },
@@ -1090,6 +1201,67 @@ const categories = {
     { name: '其他', icon: '📦' }
   ]
 };
+let categories = loadCategories();
+let catManageType = 'expense';
+
+function loadCategories() {
+  try {
+    const saved = localStorage.getItem('jizhangbao_categories');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(defaultCategories));
+}
+function saveCategories() {
+  localStorage.setItem('jizhangbao_categories', JSON.stringify(categories));
+}
+function showCategoryManage() {
+  catManageType = 'expense';
+  document.querySelectorAll('#categoryModal .type-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.catType === 'expense');
+  });
+  renderCatManageList();
+  document.getElementById('categoryModal').classList.add('show');
+}
+function hideCategoryModal() {
+  document.getElementById('categoryModal').classList.remove('show');
+  renderCategories();
+}
+function setCatManageType(type) {
+  catManageType = type;
+  document.querySelectorAll('#categoryModal .type-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.catType === type);
+  });
+  renderCatManageList();
+}
+function renderCatManageList() {
+  const list = document.getElementById('catManageList');
+  list.innerHTML = categories[catManageType].map((cat, i) => `
+    <div class="cat-manage-item">
+      <span class="cat-icon">${cat.icon}</span>
+      <span class="cat-name">${cat.name}</span>
+      <span class="cat-del" onclick="deleteCategory(${i})">✕</span>
+    </div>
+  `).join('');
+}
+function addCategory() {
+  const icon = document.getElementById('newCatIcon').value.trim() || '📌';
+  const name = document.getElementById('newCatName').value.trim();
+  if (!name) { showToast('请输入分类名称'); return; }
+  if (categories[catManageType].find(c => c.name === name)) { showToast('分类已存在'); return; }
+  categories[catManageType].push({ name, icon });
+  saveCategories();
+  document.getElementById('newCatIcon').value = '';
+  document.getElementById('newCatName').value = '';
+  renderCatManageList();
+  showToast('添加成功');
+}
+function deleteCategory(index) {
+  if (categories[catManageType].length <= 1) { showToast('至少保留一个分类'); return; }
+  categories[catManageType].splice(index, 1);
+  saveCategories();
+  renderCatManageList();
+  showToast('已删除');
+}
 
 let currentType = 'expense';
 let selectedCategory = null;
@@ -1136,6 +1308,15 @@ function switchPage(page, navEl) {
   if (page === 'add') {
     setTimeout(() => document.getElementById('amountInput').focus(), 100);
   }
+}
+
+function addQuickAmount(amount) {
+  const input = document.getElementById('amountInput');
+  const current = parseFloat(input.value) || 0;
+  input.value = (current + amount).toFixed(2);
+}
+function clearAmount() {
+  document.getElementById('amountInput').value = '';
 }
 
 function setType(type) {
@@ -1667,8 +1848,27 @@ function renderAchievements() {
   }
 }
 
+function showAddToHome() {
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+  const isWechat = /MicroMessenger/.test(navigator.userAgent);
+  
+  let msg = '添加到桌面教程：\n\n';
+  if (isWechat) {
+    msg += '微信内打开：\n点右上角「...」→「在浏览器打开」\n\n';
+  }
+  if (isIOS) {
+    msg += 'iPhone/iPad：\n1. 用Safari打开网页\n2. 点底部分享按钮（方框+箭头）\n3. 选择「添加到主屏幕」\n4. 点「添加」即可';
+  } else if (isAndroid) {
+    msg += '安卓手机：\n1. 用浏览器打开网页\n2. 点右上角菜单（三个点）\n3. 选择「添加到桌面」或「安装应用」\n4. 确认添加即可';
+  } else {
+    msg += '电脑端：\n1. 用Chrome/Edge打开\n2. 地址栏右侧会出现安装图标\n3. 点击安装即可';
+  }
+  alert(msg);
+}
+
 function showAbout() {
-  alert('记账宝 v2.0\n\n简单好用的个人记账工具\n数据保存在本地，安全可靠\n\n更新内容：\n· 修复底部导航布局\n· 新增账单编辑功能\n· 新增搜索与分类筛选\n· 新增CSV表格导出\n· 新增年度统计视图\n· 优化连续记账体验\n\n© 2026 记账宝');
+  alert('记账宝 v2.1\n\n简单好用的个人记账工具\n数据保存在本地，安全可靠\n\n更新内容：\n· 新增快速金额按钮\n· 新增分类管理\n· 新增桌面快捷方式（PWA）\n· 优化底部导航布局\n· 已有账单编辑、搜索筛选、CSV导出\n\n© 2026 记账宝');
 }
 
 function showToast(msg) {
