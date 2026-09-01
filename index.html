@@ -454,7 +454,8 @@ body {
 .nav-item.active { color: var(--primary); }
 .nav-item .nav-icon { font-size: 22px; }
 .nav-item .nav-text { font-size: 11px; margin-top: 2px; }
-.nav-item.add-btn { position: relative; top: -20px; }
+.nav-item.nav-placeholder { cursor: default; pointer-events: none; opacity: 0; }
+.nav-item.add-btn { position: absolute; left: 50%; transform: translateX(-50%); top: -20px; flex: none; padding: 0; width: auto; }
 .nav-item.add-btn .nav-icon {
   width: 48px;
   height: 48px;
@@ -971,12 +972,13 @@ body {
     <span class="nav-icon">📊</span>
     <span class="nav-text">统计</span>
   </div>
-  <div class="nav-item add-btn" onclick="switchPage('add', this)">
-    <span class="nav-icon">＋</span>
-  </div>
+  <div class="nav-item nav-placeholder"></div>
   <div class="nav-item" onclick="switchPage('me', this)">
     <span class="nav-icon">👤</span>
     <span class="nav-text">我的</span>
+  </div>
+  <div class="nav-item add-btn" onclick="switchPage('add', this)">
+    <span class="nav-icon">＋</span>
   </div>
 </div>
 
