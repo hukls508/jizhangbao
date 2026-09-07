@@ -344,6 +344,10 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
         <div class="budget-amount"><span class="spent" id="budget-spent">¥0</span> / ¥<span id="budget-total">5000</span></div>
       </div>
       <div class="budget-bar"><div class="budget-fill" id="budget-fill" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--text2)">
+        <span>今日还可花 <span id="daily-budget" style="color:var(--primary);font-weight:700">¥0</span></span>
+        <span>剩余 <span id="budget-left" style="font-weight:700">¥0</span></span>
+      </div>
       <div class="budget-categories" id="budget-cats"></div>
     </div>
     <div class="goal-card">
@@ -469,29 +473,40 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
     </div>
     <input type="text" class="amount-input expense" id="bill-amount" placeholder="0.00" inputmode="decimal">
     <div class="category-grid" id="category-grid"></div>
+    <div id="subcategory-section" style="display:none;margin-bottom:16px">
+      <div class="form-label" style="font-size:13px;font-weight:700;margin-bottom:8px">二级分类</div>
+      <div class="label-selector" id="subcategory-grid"></div>
+    </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">📅 日期</label><input type="date" class="form-input" id="bill-date"></div>
-      <div class="form-group"><label class="form-label">💳 账户</label>
-        <select class="form-input" id="bill-account">
-          <option value="现金">💵 现金</option>
-          <option value="支付宝">💙 支付宝</option>
-          <option value="微信">💚 微信</option>
-          <option value="银行卡">🏦 银行卡</option>
-          <option value="信用卡">💳 信用卡</option>
-        </select>
-      </div>
     </div>
-    <div class="form-group"><label class="form-label">🏷️ 标签（可多选）</label>
-      <div class="label-selector" id="label-selector">
-        <div class="label-option" data-label="朋友聚餐" onclick="toggleLabel(this)">🍜 朋友聚餐</div>
-        <div class="label-option" data-label="旅行" onclick="toggleLabel(this)">✈️ 旅行</div>
-        <div class="label-option" data-label="工作" onclick="toggleLabel(this)">💼 工作</div>
-        <div class="label-option" data-label="家庭" onclick="toggleLabel(this)">👨‍👩‍👧 家庭</div>
-        <div class="label-option" data-label="学习" onclick="toggleLabel(this)">📚 学习</div>
-        <div class="label-option" data-label="健康" onclick="toggleLabel(this)">💪 健康</div>
+    <div id="more-options" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">💳 账户</label>
+          <select class="form-input" id="bill-account">
+            <option value="现金">💵 现金</option>
+            <option value="支付宝">💙 支付宝</option>
+            <option value="微信">💚 微信</option>
+            <option value="银行卡">🏦 银行卡</option>
+            <option value="信用卡">💳 信用卡</option>
+          </select>
+        </div>
       </div>
+      <div class="form-group"><label class="form-label">🏷️ 标签（可多选）</label>
+        <div class="label-selector" id="label-selector">
+          <div class="label-option" data-label="朋友聚餐" onclick="toggleLabel(this)">🍜 朋友聚餐</div>
+          <div class="label-option" data-label="旅行" onclick="toggleLabel(this)">✈️ 旅行</div>
+          <div class="label-option" data-label="工作" onclick="toggleLabel(this)">💼 工作</div>
+          <div class="label-option" data-label="家庭" onclick="toggleLabel(this)">👨‍👩‍👧 家庭</div>
+          <div class="label-option" data-label="学习" onclick="toggleLabel(this)">📚 学习</div>
+          <div class="label-option" data-label="健康" onclick="toggleLabel(this)">💪 健康</div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">📝 备注</label><input type="text" class="form-input" id="bill-note" placeholder="添加备注（可选）"></div>
     </div>
-    <div class="form-group"><label class="form-label">📝 备注</label><input type="text" class="form-input" id="bill-note" placeholder="添加备注（可选）"></div>
+    <div style="text-align:center;margin:12px 0">
+      <span id="more-toggle" style="font-size:13px;color:var(--primary);cursor:pointer;font-weight:600" onclick="toggleMoreOptions()">展开更多选项 ▼</span>
+    </div>
     <button class="btn-primary" id="save-btn" onclick="saveBill()">💾 保存</button>
   </div>
 </div>
@@ -612,6 +627,20 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
   </div>
 </div>
 
+<!-- 预算设置弹窗 -->
+<div id="budget-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>📊 预算设置</h3><div class="modal-close" onclick="closeModal('budget-modal')">×</div></div>
+    <div class="form-group">
+      <label class="form-label">💰 本月总预算</label>
+      <input type="number" class="form-input" id="budget-total-input" placeholder="5000">
+    </div>
+    <div class="form-label" style="font-size:13px;font-weight:700;margin-bottom:8px">📂 分类预算</div>
+    <div id="budget-categories-input"></div>
+    <button class="btn-primary" onclick="saveBudgets()">💾 保存预算</button>
+  </div>
+</div>
+
 <!-- 详情弹窗 -->
 <div id="detail-modal" class="modal">
   <div class="modal-content">
@@ -626,7 +655,7 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
 <script>
 let bills = JSON.parse(localStorage.getItem('cz_bills')||'[]');
 let accounts = JSON.parse(localStorage.getItem('cz_accounts')||'null');
-let budget = JSON.parse(localStorage.getItem('cz_budget')||'{"total":5000}');
+let budget = JSON.parse(localStorage.getItem('cz_budget')||'{"total":5000,"categories":{"餐饮":1500,"交通":500,"购物":800,"娱乐":300,"居住":2000,"其他":500}}');
 let goal = JSON.parse(localStorage.getItem('cz_goal')||'{"target":50000,"saved":0}');
 let recurring = JSON.parse(localStorage.getItem('cz_recurring')||'[]');
 let creditCards = JSON.parse(localStorage.getItem('cz_credit')||'[]');
@@ -653,7 +682,22 @@ const incomeCategories=[
   {id:'投资',icon:'📈',color:'#dbeafe'},{id:'兼职',icon:'💼',color:'#f3e8ff'},
   {id:'红包',icon:'🧧',color:'#fee2e2'},{id:'其他',icon:'📦',color:'#f3f4f6'}
 ];
+const subCategories={
+  '餐饮':['外卖','堂食','买菜','零食','饮料','早餐','夜宵'],
+  '交通':['地铁','公交','打车','加油','停车','高铁','飞机'],
+  '购物':['衣服','数码','日用品','化妆品','食品','家电','书籍'],
+  '娱乐':['电影','游戏','KTV','旅游','演出','会员','酒吧'],
+  '居住':['房租','水电','物业','维修','家具','网费','燃气'],
+  '医疗':['门诊','药品','体检','牙科','眼镜','保健','住院'],
+  '教育':['学费','培训','书籍','文具','考试','课程','资料'],
+  '通讯':['话费','流量','宽带','快递','邮寄','增值服务'],
+  '运动':['健身','装备','比赛','私教','户外','瑜伽','跑步'],
+  '旅行':['住宿','门票','交通','餐饮','购物','保险','签证'],
+  '人情':['红包','礼物','请客','份子钱','聚会','捐赠'],
+  '其他':['杂项','丢失','捐赠','其他']
+};
 const allLabels=['朋友聚餐','旅行','工作','家庭','学习','健康'];
+let currentSubCategory='';
 
 if(!accounts){
   accounts=[
@@ -696,13 +740,18 @@ function switchPage(page){
 }
 
 function showAddModal(type){
-  currentBillType=type;currentCategory=type==='expense'?'餐饮':'工资';selectedLabels=[];
+  currentBillType=type;currentCategory=type==='expense'?'餐饮':'工资';currentSubCategory='';selectedLabels=[];
   document.getElementById('add-modal').classList.add('show');
   document.getElementById('bill-amount').value='';
   document.getElementById('bill-note').value='';
   document.getElementById('bill-date').valueAsDate=new Date();
+  document.getElementById('more-options').style.display='none';
+  document.getElementById('more-toggle').textContent='展开更多选项 ▼';
+  document.getElementById('subcategory-section').style.display='none';
   document.querySelectorAll('.label-option').forEach(l=>l.classList.remove('selected'));
   setBillType(type);
+  // 默认显示餐饮的二级分类
+  if(type==='expense')selectCategory('餐饮');
 }
 function closeModal(id){document.getElementById(id).classList.remove('show')}
 
@@ -723,7 +772,35 @@ function renderCategories(){
     </div>
   `).join('');
 }
-function selectCategory(id){currentCategory=id;renderCategories()}
+function selectCategory(id){
+  currentCategory=id;
+  currentSubCategory='';
+  renderCategories();
+  // 显示二级分类
+  const subs=subCategories[id];
+  if(subs&&subs.length>0){
+    document.getElementById('subcategory-section').style.display='block';
+    document.getElementById('subcategory-grid').innerHTML=subs.map(s=>`<div class="label-option" data-sub="${s}" onclick="selectSubCategory(this,'${s}')">${s}</div>`).join('');
+  }else{
+    document.getElementById('subcategory-section').style.display='none';
+  }
+}
+function selectSubCategory(el,sub){
+  document.querySelectorAll('#subcategory-grid .label-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  currentSubCategory=sub;
+}
+function toggleMoreOptions(){
+  const more=document.getElementById('more-options');
+  const toggle=document.getElementById('more-toggle');
+  if(more.style.display==='none'){
+    more.style.display='block';
+    toggle.textContent='收起更多选项 ▲';
+  }else{
+    more.style.display='none';
+    toggle.textContent='展开更多选项 ▼';
+  }
+}
 function toggleLabel(el){el.classList.toggle('selected');const l=el.dataset.label;if(el.classList.contains('selected')){if(!selectedLabels.includes(l))selectedLabels.push(l)}else{selectedLabels=selectedLabels.filter(x=>x!==l)}}
 
 function saveBill(){
@@ -732,7 +809,7 @@ function saveBill(){
   const date=document.getElementById('bill-date').value;
   const account=document.getElementById('bill-account').value;
   const note=document.getElementById('bill-note').value.trim();
-  bills.unshift({id:Date.now(),type:currentBillType,category:currentCategory,amount,date,account,note,labels:[...selectedLabels],bookId:currentBook,createdAt:new Date().toISOString()});
+  bills.unshift({id:Date.now(),type:currentBillType,category:currentCategory,subCategory:currentSubCategory,amount,date,account,note,labels:[...selectedLabels],bookId:currentBook,createdAt:new Date().toISOString()});
   localStorage.setItem('cz_bills',JSON.stringify(bills));
   closeModal('add-modal');showToast('✅ 记账成功');renderAll();
 }
@@ -768,6 +845,14 @@ function renderHome(){
   const fill=document.getElementById('budget-fill');
   fill.style.width=pct+'%';
   fill.className='budget-fill'+(pct>90?' danger':pct>70?' warning':'');
+  // 日均预算
+  const now=new Date();
+  const daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  const remainingDays=daysInMonth-now.getDate()+1;
+  const budgetLeft=Math.max(0,budget.total-expense);
+  const dailyBudget=remainingDays>0?budgetLeft/remainingDays:0;
+  document.getElementById('daily-budget').textContent='¥'+dailyBudget.toFixed(0);
+  document.getElementById('budget-left').textContent='¥'+budgetLeft.toFixed(0);
   const goalPct=Math.min(goal.saved/goal.target*100,100);
   document.getElementById('goal-current').textContent='¥'+goal.saved.toFixed(0);
   document.getElementById('goal-fill').style.width=goalPct+'%';
@@ -799,10 +884,11 @@ function renderRecentBills(){
 function renderBillItem(b){
   const cats=b.type==='expense'?expenseCategories:incomeCategories;
   const c=cats.find(x=>x.id===b.category)||{icon:'📦',color:'#f3f4f6'};
+  const catDisplay=b.subCategory?`${b.category} > ${b.subCategory}`:b.category;
   return `<div class="bill-item" onclick="showBillDetail(${b.id})">
     <div class="bill-icon" style="background:${c.color}">${c.icon}</div>
     <div class="bill-info">
-      <div class="bill-category">${b.category}${b.note?` · ${b.note}`:''}</div>
+      <div class="bill-category">${catDisplay}${b.note?` · ${b.note}`:''}</div>
       <div class="bill-note">${b.date} · ${b.account}</div>
       ${b.labels&&b.labels.length>0?`<div class="bill-labels">${b.labels.map(l=>`<span class="bill-label">#${l}</span>`).join('')}</div>`:''}
     </div>
@@ -1092,8 +1178,24 @@ function toggleDark(){
   showToast(isDark?'🌙 暗黑模式':'☀️ 浅色模式');
 }
 function showBudgets(){
-  const newBudget=prompt('设置本月预算金额（元）',budget.total);
-  if(newBudget&&!isNaN(newBudget)){budget.total=parseFloat(newBudget);localStorage.setItem('cz_budget',JSON.stringify(budget));renderHome();showToast('预算已更新')}
+  document.getElementById('budget-total-input').value=budget.total;
+  const cats=expenseCategories.slice(0,8);
+  document.getElementById('budget-categories-input').innerHTML=cats.map(c=>`
+    <div class="form-row" style="margin-bottom:10px">
+      <div style="flex:1;display:flex;align-items:center;gap:8px"><span style="font-size:18px">${c.icon}</span><span style="font-size:13px;font-weight:600">${c.id}</span></div>
+      <input type="number" class="form-input" style="width:120px" id="budget-cat-${c.id}" placeholder="0" value="${budget.categories[c.id]||0}">
+    </div>
+  `).join('');
+  document.getElementById('budget-modal').classList.add('show');
+}
+function saveBudgets(){
+  budget.total=parseFloat(document.getElementById('budget-total-input').value)||0;
+  expenseCategories.slice(0,8).forEach(c=>{
+    const val=parseFloat(document.getElementById('budget-cat-'+c.id).value)||0;
+    budget.categories[c.id]=val;
+  });
+  localStorage.setItem('cz_budget',JSON.stringify(budget));
+  closeModal('budget-modal');renderHome();showToast('✅ 预算已保存');
 }
 function showGoals(){
   const target=prompt('设置储蓄目标金额（元）',goal.target);
