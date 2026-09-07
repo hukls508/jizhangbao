@@ -13,6 +13,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Segoe UI',Robot
   --bg:#0a0a0a;--card:#1a1a1a;--text:#f5f5f5;--text2:#a0a0a0;--text3:#666666;
   --light:#2a2a2a;--border:#333333;--shadow:0 4px 20px rgba(0,0,0,0.5);
   --radius:16px;--gold-gradient:linear-gradient(135deg,#d4af37,#f4d03f,#d4af37);
+  --header-bg:linear-gradient(135deg,#0a0a0a,#1a1a1a,#2a2a2a);
+  --card-glow:0 4px 24px rgba(212,175,55,0.15),0 0 0 1px rgba(212,175,55,0.1);
+}
+body.light{
+  --bg:#f5f5f5;--card:#ffffff;--text:#1a1a1a;--text2:#666666;--text3:#999999;
+  --light:#f0f0f0;--border:#e5e5e5;--shadow:0 4px 20px rgba(0,0,0,0.08);
+  --header-bg:linear-gradient(135deg,#ffffff,#f8f8f8,#f0f0f0);
+  --card-glow:0 4px 24px rgba(0,0,0,0.06),0 0 0 1px rgba(0,0,0,0.05);
 }
 body.dark{
   --bg:#050505;--card:#151515;--text:#f5f5f5;--text2:#999999;--text3:#555555;
@@ -28,7 +36,7 @@ body{background:var(--bg);color:var(--text)}
 @keyframes shine{0%{background-position:-200% center}100%{background-position:200% center}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-.header{background:linear-gradient(135deg,#0a0a0a,#1a1a1a,#2a2a2a);color:#d4af37;padding:20px 20px 60px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;border-bottom:2px solid #d4af37}
+.header{background:var(--header-bg);color:#d4af37;padding:20px 20px 60px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;border-bottom:2px solid #d4af37}
 .header::before{content:'';position:absolute;top:-50px;right:-30px;width:160px;height:160px;background:rgba(255,255,255,0.1);border-radius:50%;animation:float 6s ease-in-out infinite}
 .header::after{content:'';position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;animation:float 8s ease-in-out infinite reverse}
 .header-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
@@ -113,7 +121,7 @@ body{background:var(--bg);color:var(--text)}
 .bill-amount.income{color:var(--primary)}
 .bill-amount.expense{color:var(--text)}
 
-.stats-header{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);color:#d4af37;padding:24px 20px;border-radius:0 0 30px 30px;border-bottom:2px solid #d4af37}
+.stats-header{background:var(--header-bg);color:#d4af37;padding:24px 20px;border-radius:0 0 30px 30px;border-bottom:2px solid #d4af37}
 .stats-title{font-size:22px;font-weight:800;margin-bottom:16px}
 .stats-tabs{display:flex;gap:8px}
 .stats-tab{padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;background:rgba(255,255,255,0.15);cursor:pointer;transition:all .2s}
@@ -257,7 +265,7 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
 .menu-text{flex:1;font-size:14px;font-weight:600}
 .menu-arrow{color:var(--text3);font-size:18px}
 .menu-badge{background:var(--danger);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-right:8px}
-.profile-header{background:linear-gradient(135deg,#0a0a0a,#1a1a1a,#2a2a2a);color:#d4af37;padding:30px 20px 50px;border-radius:0 0 30px 30px;text-align:center;position:relative;overflow:hidden;border-bottom:2px solid #d4af37}
+.profile-header{background:var(--header-bg);color:#d4af37;padding:30px 20px 50px;border-radius:0 0 30px 30px;text-align:center;position:relative;overflow:hidden;border-bottom:2px solid #d4af37}
 .profile-header::before{content:'';position:absolute;top:-40px;right:-20px;width:140px;height:140px;background:rgba(255,255,255,0.1);border-radius:50%;animation:float 6s infinite}
 .profile-avatar{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,0.25);font-size:36px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;backdrop-filter:blur(10px);border:3px solid rgba(255,255,255,0.3)}
 .profile-name{font-size:18px;font-weight:800}
@@ -288,7 +296,7 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
 
 /* 高级视觉效果 */
 .gold-text{background:linear-gradient(135deg,#d4af37,#f4d03f,#d4af37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.card-glow{box-shadow:0 4px 24px rgba(212,175,55,0.15),0 0 0 1px rgba(212,175,55,0.1)}
+.card-glow{box-shadow:var(--card-glow)}
 .card-hover{transition:all .3s cubic-bezier(.4,0,.2,1)}
 .card-hover:active{transform:scale(0.98)}
 .shimmer{position:relative;overflow:hidden}
@@ -301,6 +309,22 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
 .number-roll{transition:all .3s ease}
 .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.3),transparent);margin:20px 0}
 .badge-gold{background:linear-gradient(135deg,#d4af37,#f4d03f);color:#0a0a0a;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800}
+
+/* 白黑模式特殊样式 */
+body.light .balance-card{background:rgba(255,255,255,0.9);border:1px solid rgba(212,175,55,0.3)}
+body.light .header-icon svg{fill:#d4af37 !important}
+body.light .book-selector{color:#d4af37}
+body.light .amount-input{background:#f8f8f8;color:#1a1a1a}
+body.light .form-input{background:#f8f8f8;color:#1a1a1a}
+body.light .modal-content{background:#fff}
+body.light .category-item .icon{filter:brightness(0.9)}
+body.light .bill-item:active{background:#f5f5f5}
+body.light .tabbar{background:#fff;border-top:1px solid #e5e5e5}
+body.light .search-input{background:#f8f8f8;color:#1a1a1a}
+body.light .calendar-day{background:#f8f8f8}
+body.light .calendar-day.today{background:#d4af37;color:#0a0a0a}
+body.light .stats-tab{background:#f0f0f0;color:#666}
+body.light .stats-tab.active{background:#fff;color:#d4af37;border:1px solid #d4af37}
 </style>
 </head>
 <body>
@@ -452,7 +476,7 @@ body.dark .tabbar{background:rgba(30,41,59,0.95)}
       <div class="menu-item card-hover" onclick="showChallenges()"><span class="menu-icon" style="background:#1a2a1a">🎯</span><span class="menu-text">省钱挑战</span><span class="menu-arrow">›</span></div>
       <div class="menu-item card-hover" onclick="showReminder()"><span class="menu-icon" style="background:#1a1a2a">🔔</span><span class="menu-text">记账提醒</span><span class="menu-arrow">›</span></div>
       <div class="menu-item card-hover" onclick="showCloudSync()"><span class="menu-icon" style="background:#1a2a2a">☁️</span><span class="menu-text">云同步</span><span class="badge-gold">PRO</span><span class="menu-arrow">›</span></div>
-      <div class="menu-item card-hover" onclick="toggleDark()"><span class="menu-icon" style="background:#2a2a2a"><span id="dark-icon">🌙</span></span><span class="menu-text" id="dark-text">暗黑模式</span><span class="menu-arrow">›</span></div>
+      <div class="menu-item card-hover" onclick="toggleDark()"><span class="menu-icon" style="background:#2a2a2a"><span id="dark-icon">🌙</span></span><span class="menu-text" id="dark-text">黑金模式</span><span class="menu-arrow">›</span></div>
       <div class="menu-item card-hover" onclick="showBudgets()"><span class="menu-icon" style="background:#2a2a1a">📊</span><span class="menu-text">预算设置</span><span class="menu-arrow">›</span></div>
       <div class="menu-item card-hover" onclick="showGoals()"><span class="menu-icon" style="background:#1a2a1a">🎯</span><span class="menu-text">储蓄目标</span><span class="menu-arrow">›</span></div>
       <div class="menu-item card-hover" onclick="showVip()"><span class="menu-icon" style="background:#2a1a2a">👑</span><span class="menu-text">会员中心</span><span class="badge-gold">PRO</span><span class="menu-arrow">›</span></div>
@@ -739,10 +763,12 @@ if(!challenges){
   ];
   localStorage.setItem('cz_challenges',JSON.stringify(challenges));
 }
-if(isDark)document.body.classList.add('dark');
+if(!isDark)document.body.classList.add('light');
 if(isVip){document.getElementById('vip-text').textContent='PRO会员';}
 document.getElementById('bill-date').valueAsDate=new Date();
 document.getElementById('current-book-name').textContent=books.find(b=>b.id===currentBook)?.name||'日常账本';
+document.getElementById('dark-text').textContent=isDark?'白黑模式':'黑金模式';
+document.getElementById('dark-icon').textContent=isDark?'☀️':'🌙';
 renderAll();
 
 function getBookBills(){return bills.filter(b=>b.bookId===currentBook||!b.bookId)}
@@ -1189,11 +1215,12 @@ function saveReminder(){
 }
 // 暗黑模式
 function toggleDark(){
-  isDark=!isDark;document.body.classList.toggle('dark',isDark);
+  isDark=!isDark;
+  document.body.classList.toggle('light',!isDark);
   localStorage.setItem('cz_dark',isDark?'1':'0');
-  document.getElementById('dark-text').textContent=isDark?'浅色模式':'暗黑模式';
+  document.getElementById('dark-text').textContent=isDark?'白黑模式':'黑金模式';
   document.getElementById('dark-icon').textContent=isDark?'☀️':'🌙';
-  showToast(isDark?'🌙 暗黑模式':'☀️ 浅色模式');
+  showToast(isDark?'🌙 黑金模式':'☀️ 白黑模式');
 }
 function showBudgets(){
   document.getElementById('budget-total-input').value=budget.total;
